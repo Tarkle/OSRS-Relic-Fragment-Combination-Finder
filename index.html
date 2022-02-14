@@ -1,0 +1,218 @@
+<!DOCTYPE html>
+
+<html lang="en" xmlns="http://www.w3.org/1999/xhtml">
+<head>
+    <meta charset="utf-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta http-equiv="Content-Security-Policy" content="upgrade-insecure-requests">
+    <title>Fragment Permutator</title>
+    <link rel="stylesheet" href="Libraries/font-awsome.all.css">
+    <link rel="stylesheet" href="Libraries/bulma.css">
+    <script src="FragmentStuff.js"></script>
+
+    <style>
+        .tooltip {
+        position: relative;
+        display: inline-block;  
+        }
+
+        .tooltip .tooltiptext {
+        visibility: hidden;
+        width: 600px;
+        background-color: black;
+        color: #fff;
+        text-align: center;
+        border-radius: 6px;
+        padding: 5px 0;
+
+        /* Position the tooltip */
+        position: absolute;
+        z-index: 1;
+        top: 100%;
+        left: 0%;
+        margin-left: -60px;
+        }
+
+        .tooltip:hover .tooltiptext {
+        visibility: visible;
+        }
+    </style>
+</head>
+
+<body onload="OnLoadJS();">
+<div style="padding: 5px" class="field is-grouped">
+    <div class="dropdown" id="RelicDropDown">
+        <div class="dropdown-trigger">
+            <button class="button" aria-haspopup="true" aria-controls="dropdown-menu">
+                <span id="RelicSelectorName">Select Relic: </span>
+                <span class="icon is-small">
+                    <i class="fas fa-angle-down" aria-hidden="true"></i>
+                </span>
+            </button>
+        </div>
+        <div class="dropdown-menu" id="dropdown-menu" role="menu">
+            <div id="RelicDropItems" class="dropdown-content">
+
+            </div>
+        </div>
+    </div>
+    <div class="control">
+        <button id="AddRelic" class="button" onclick="AddClick()">Add</button>
+    </div>
+
+    <div class="tooltip" style="color:rgb(17, 0, 255); padding-right: 600px;position: absolute; right: 0;">How to use
+        <span class="tooltiptext">
+            Select relics you want to find combinations for and click "Add" for each</br></br>
+            Enter the amount of fragment slots you want to find combinations for</br></br>
+            Click "Run" and PLEASE be patient, it's not the fastest thing. The more relics you have, the more combinations there are, the longer it takes</br></br>
+            You will then see a number twoards the bottom showing all possible combinations for the selected relics when it finishes</br></br>
+            ONLY click "Display/Refresh Combinations" button with a relativly low number, rending UI can take a while with large numbers (Aim for less than 2000 or something?)</br></br>
+            You can select two types of filters, Relic levels and fragments, once you click "Add" it automatically filters the list</br></br>
+            Selecting more filters, will filter the already filtered list</br></br>
+            If your total combinations number reaches '0', there is no possible combinations for that specific filter stack</br></br>
+            You must press the "clear" button and start over
+        </span>
+      </div>
+</div>
+
+
+    <div style="padding: 5px" class="field">
+        <label class="label">Fragment Slots:</label>
+        <div class="control">
+            <textarea id="NumberOfFragmentSlots" rows="1" cols="1" class="textarea" placeholder="Number Of Fragment Slots"></textarea>
+        </div>
+    </div>
+
+    <div style="padding: 5px" class="field is-grouped">
+        <div class="control">
+            <button id="RunRelic" class="button" onclick="RunClick()">Run</button>
+        </div>
+        <div class="control">
+            <button id="ClearRelics" class="button" onclick="ClearClick()">Clear</button>
+        </div>
+    </div>
+
+    <div style="padding: 5px" class="field is-grouped">
+        <div class="control">
+            <button id="AddFilter" class="button" onclick="AddFilterClick()">Add Relic Filter</button>
+        </div>
+        <div class="dropdown" id="FilterDropDown">
+            <div class="dropdown-trigger">
+                <button class="button" aria-haspopup="true" aria-controls="dropdown-menu">
+                    <span id="FilterSelectorName">Select Filter: </span>
+                    <span class="icon is-small">
+                        <i class="fas fa-angle-down" aria-hidden="true"></i>
+                    </span>
+                </button>
+            </div>
+            <div class="dropdown-menu" id="dropdown-menu" role="menu">
+                <div id="FilterDropItems" class="dropdown-content">
+    
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div style="padding: 5px" class="field is-grouped">
+        <div class="control">
+            <button id="AddFragmentFilter" class="button" onclick="AddFragmentFilterClick()">Add Fragment Filter</button>
+        </div>
+        <div class="dropdown" id="FragmentFilterDropDown">
+            <div class="dropdown-trigger">
+                <button class="button" aria-haspopup="true" aria-controls="dropdown-menu">
+                    <span id="FragmentFilterSelectorName">Select Filter: </span>
+                    <span class="icon is-small">
+                        <i class="fas fa-angle-down" aria-hidden="true"></i>
+                    </span>
+                </button>
+            </div>
+            <div class="dropdown-menu" id="dropdown-menu" role="menu">
+                <div id="FragmentFilterDropItems" class="dropdown-content">
+    
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <p style="text-align: center;">
+        <a class="button is-dark" href="https://www.buymeacoffee.com/TarkleCoffee" target="_blank" style="text-align: center; margin: auto;">
+                    Feel free to support me and buy me a coffee! (Or beer)
+        </a>
+    </p>
+    <p style="text-align: center;">
+        <div id="DisplayMessage" style="text-align: center; margin: auto;">
+            
+        </div>
+    </p>
+    
+
+    <div id="RelicsToCalculate">
+        <table class="table" id="RelicCalcTable">
+            <thead>
+                <tr>
+                    <th style="display:none;">ID</th>
+                    <th>Relics</th>
+                </tr>
+            </thead>
+            <tbody id="AddedRelicsBody">
+                <!-- <tr name="AddedRelicItems">
+                    <td style="display:none;" id="RelicID">123</td>
+                    <td>456</td>
+                </tr> -->
+            </tbody>
+        </table>
+    </div>
+
+    <div id="FiltersApplied">
+        <table class="table" id="FiltersSelectedTable">
+            <thead>
+                <tr>
+                    <th style="display:none;">ID</th>
+                    <th>Relic Effect Filters</th>
+                </tr>
+            </thead>
+            <tbody id="AddedFiltersBody">
+                <!-- <tr name="AddedRelicItems">
+                    <td style="display:none;" id="RelicID">123</td>
+                    <td>456</td>
+                </tr> -->
+            </tbody>
+        </table>
+    </div>
+
+    <div id="FragmentFiltersApplied">
+        <table class="table" id="FragmentFiltersSelectedTable">
+            <thead>
+                <tr>
+                    <th style="display:none;">ID</th>
+                    <th>Fragment Filters</th>
+                </tr>
+            </thead>
+            <tbody id="FragmentAddedFiltersBody">
+                <!-- <tr name="AddedRelicItems">
+                    <td style="display:none;" id="RelicID">123</td>
+                    <td>456</td>
+                </tr> -->
+            </tbody>
+        </table>
+    </div>
+
+    <div id="FragmentsInvolvedInRelics">
+        <table class="table" id="FragmentsFromrelicsTable">
+            <thead>
+                <tr>
+                    <p id="CombinationsPossible">Total Combinations Possible: </p>
+                    <div class="control">
+                        <button id="DisplayCombosToTable" class="button" onclick="DisplayClick()">Display/Refresh Combinations</button>
+                    </div>
+                    <th>Fragment Combinations</th>
+                </tr>
+            </thead>
+            <tbody id="ListOfFragments">
+
+            </tbody>
+        </table>
+    </div>
+</body>
+</html>
