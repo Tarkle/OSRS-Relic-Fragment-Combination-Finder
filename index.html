@@ -58,7 +58,7 @@
         </div>
     </div>
     <div class="control">
-        <button id="AddRelic" class="button" onclick="AddClick()">Add</button>
+        <button id="AddRelic" class="button is-warning" onclick="AddClick()">Add</button>
     </div>
 
     <div class="tooltip" style="color:rgb(17, 0, 255); padding-right: 600px;position: absolute; right: 0;">How to use
@@ -86,16 +86,16 @@
 
     <div style="padding: 5px" class="field is-grouped">
         <div class="control">
-            <button id="RunRelic" class="button" onclick="RunClick()">Run</button>
+            <button id="RunRelic" class="button is-success" onclick="RunClick()">Get all combinations</button>
         </div>
         <div class="control">
-            <button id="ClearRelics" class="button" onclick="ClearClick()">Clear</button>
+            <button id="ClearRelics" class="button is-danger is-light" onclick="ClearClick()">Reset All Data</button>
         </div>
     </div>
 
     <div style="padding: 5px" class="field is-grouped">
         <div class="control">
-            <button id="AddFilter" class="button" onclick="AddFilterClick()">Add Relic Filter</button>
+            <button id="AddFilter" class="button is-warning" onclick="AddFilterClick(true)">Add Relic Filter</button>
         </div>
         <div class="dropdown" id="FilterDropDown">
             <div class="dropdown-trigger">
@@ -116,7 +116,7 @@
 
     <div style="padding: 5px" class="field is-grouped">
         <div class="control">
-            <button id="AddFragmentFilter" class="button" onclick="AddFragmentFilterClick()">Add Fragment Filter</button>
+            <button id="AddFragmentFilter" class="button is-warning" onclick="AddFragmentFilterClick(true)">Add Fragment Filter</button>
         </div>
         <div class="dropdown" id="FragmentFilterDropDown">
             <div class="dropdown-trigger">
@@ -137,13 +137,14 @@
 
     <p style="text-align: center;">
         <a class="button is-dark" href="https://www.buymeacoffee.com/TarkleCoffee" target="_blank" style="text-align: center; margin: auto;">
-                    Feel free to support me and buy me a coffee! (Or beer)
+                    Feel free to support me and buy me a coffee! (Or beer) Click Here!
         </a>
     </p>
     <p style="text-align: center;">
         <div id="DisplayMessage" style="text-align: center; margin: auto;">
             
         </div>
+        <p style="text-align: center; margin: auto;" id="CombinationsPossible">Total Combinations Possible: </p>
     </p>
     
 
@@ -201,10 +202,9 @@
     <div id="FragmentsInvolvedInRelics">
         <table class="table" id="FragmentsFromrelicsTable">
             <thead>
-                <tr>
-                    <p id="CombinationsPossible">Total Combinations Possible: </p>
+                <tr>                    
                     <div class="control">
-                        <button id="DisplayCombosToTable" class="button" onclick="DisplayClick()">Display/Refresh Combinations</button>
+                        <button id="DisplayCombosToTable" class="button is-warning" onclick="DisplayClick()">Display/Refresh Combinations</button>
                     </div>
                     <th>Fragment Combinations</th>
                 </tr>
