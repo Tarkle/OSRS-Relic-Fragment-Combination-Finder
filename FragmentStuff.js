@@ -309,8 +309,17 @@ function AddFragmentFilterClick(AddFilter)
         }
     }
 
-    if(ListOfFilterFragmentStrings == [])
+    if(ListOfFilterFragmentStrings.length <= 0)
     {
+        if(ListOfFilterStrings.length <= 0)
+        {
+            for(var i = 0; i < FragmentPermutations.length; i++)
+            {
+                ListOfIndexesFromFilter.push(i); //Populates all elements             
+            }
+            document.getElementById("CombinationsPossible").innerHTML = `Total Combinations Possible: ${ListOfIndexesFromFilter.length}`;
+        }
+
         return;
     }
 
