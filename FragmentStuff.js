@@ -56,6 +56,7 @@ function PopulateFilterDropDown(){
     {
         document.getElementById('FilterDropItems').innerHTML += `<a class="dropdown-item">${UniqueListOfRelics[i]}</a>`;
     }
+    document.getElementById('FilterSelectorName').innerHTML = UniqueListOfRelics[0];
 }
 
 function PopulateFragmentFilterDropDown()
@@ -83,6 +84,7 @@ function PopulateFragmentFilterDropDown()
     {
         document.getElementById('FragmentFilterDropItems').innerHTML += `<a name="FragDropDownItem" class="dropdown-item">${uniqueListOfFragments[i]}</a>`;
     }
+    document.getElementById('FragmentFilterSelectorName').innerHTML = uniqueListOfFragments[0];
 }
 
 function AddClickEventToRelicDropDownMenu() {
@@ -195,6 +197,12 @@ function RunClick(){
     ListOfIndexesFromFilter = [];
     if(document.getElementById('RelicCalcTable').tBodies[0].rows[0] != undefined)
     {
+        if(document.getElementById('NumberOfFragmentSlots').value <= 0 || document.getElementById('NumberOfFragmentSlots').value > 7 || document.getElementById('NumberOfFragmentSlots').value == '')
+        {
+            document.getElementById('DisplayMessage').innerHTML = `<h1 style="color:blue;"><b>Please enter a number between 1 and 7 into the Fragment Slot box</b></h1>`;
+            return;
+        }
+
         AllFragmentsFromRelics = GetAllChosenFragments();
 
         //console.log(Permutations(AllFragmentsFromRelics, document.getElementById('NumberOfFragmentSlots').value));
@@ -211,7 +219,7 @@ function RunClick(){
                 RelicsOfFragmentsinRows[i].push([FragmentPermutations[i][x].RelicOneID, FragmentPermutations[i][x].RelicTwoID]);
             }
         }
-        UpdateText(false);
+        document.getElementById('DisplayMessage').innerHTML = `<h1 style="color:green;">Combinations Complete!</h1>`;
         SetListAvailableRelicsPerRow();
         document.getElementById("CombinationsPossible").innerHTML = `Total Combinations Possible: ${ListOfAvailableRelicsPerRow.length}`;
         PopulateFilterDropDown();
@@ -238,14 +246,17 @@ function LoopChecker(ArrayOfStuff, ArrayOfFilters)
     return IncludesFilterWord;
 }
 
-function AddFilterClick()
+function AddFilterClick(AddFilter)
 {
     var SelectedFilter = document.getElementById('FilterSelectorName').innerHTML;
     ListOfIndexesFromFilter = [];
     document.getElementById('AddedFiltersBody').innerHTML = '';
-    if(ListOfFilterStrings.find(x => x == SelectedFilter) == undefined)
+    if(AddFilter)
     {
-        ListOfFilterStrings.push(SelectedFilter);
+        if(ListOfFilterStrings.find(x => x == SelectedFilter) == undefined)
+        {
+            ListOfFilterStrings.push(SelectedFilter);
+        }
     }
 
     if(ListOfFilterStrings == [])
@@ -280,17 +291,22 @@ function AddFilterClick()
     document.getElementById("CombinationsPossible").innerHTML = `Total Combinations Possible: ${ListOfIndexesFromFilter.length}`;
 }
 
-function AddFragmentFilterClick()
+function AddFragmentFilterClick(AddFilter)
 {
+    document.getElementById('FragmentAddedFiltersBody').innerHTML = '';
     if(ListOfFilterStrings.length > 0)
     {
         AddFilterClick(); //Apply any relic filters first
     }
+
     //ListOfIndexesFromFilter[] will now be populated
     var SelectedFragmentFilter = document.getElementById('FragmentFilterSelectorName').innerHTML;
-    if(ListOfFilterFragmentStrings.find(x => x == SelectedFragmentFilter) == undefined)
-    {
-        ListOfFilterFragmentStrings.push(SelectedFragmentFilter);
+    if(AddFilter)
+    {        
+        if(ListOfFilterFragmentStrings.find(x => x == SelectedFragmentFilter) == undefined)
+        {
+            ListOfFilterFragmentStrings.push(SelectedFragmentFilter);
+        }
     }
 
     if(ListOfFilterFragmentStrings == [])
@@ -373,15 +389,15 @@ function DisplayFilterToUI(_SelectedFilter)
     {
         for(var i = 0; i < document.getElementById('FiltersSelectedTable').tBodies[0].rows.length; i++)
         {
-            if(document.getElementById('FiltersSelectedTable').tBodies[0].rows[i].cells[0].innerHTML === SelectedFilter)
+            if(document.getElementById('FiltersSelectedTable').tBodies[0].rows[i].cells[0].innerHTML.replace(/ x/g, '').trim() === SelectedFilter)
             {
                 return;
             }
         }
     }
 
-    Table.innerHTML += `<tr name="FiltersItems">
-                    <td>${SelectedFilter}</td>
+    Table.innerHTML += `<tr name="FiltersItems" onclick="RemoveFilter()">
+                    <td name="RelEffFilter">${SelectedFilter}    x</td>
                 </tr>`;
 }
 
@@ -394,16 +410,36 @@ function DisplayFragmentFilterToUI(_SelectedFilter)
     {
         for(var i = 0; i < document.getElementById('FragmentFiltersSelectedTable').tBodies[0].rows.length; i++)
         {
-            if(document.getElementById('FragmentFiltersSelectedTable').tBodies[0].rows[i].cells[0].innerHTML === SelectedFilter)
+            if(document.getElementById('FragmentFiltersSelectedTable').tBodies[0].rows[i].cells[0].innerHTML.replace(/ x/g, '').trim() === SelectedFilter)
             {
                 return;
             }
         }
     }
 
-    Table.innerHTML += `<tr name="FragFiltersItems">
-                    <td>${SelectedFilter}</td>
+    Table.innerHTML += `<tr name="FragFiltersItems" onclick="RemoveFilter()">
+                    <td name="RFragFilt">${SelectedFilter}    x</td>
                 </tr>`;
+}
+
+function RemoveFilter()
+{
+    var indexToRemove = 0;
+    var name = event.target.getAttribute('name');
+    if(name == 'RelEffFilter')
+    {
+        indexToRemove = ListOfFilterStrings.findIndex(x => x == event.target.innerHTML.replace(/ x/g, '').trim());
+        ListOfFilterStrings.splice(indexToRemove, 1);
+
+        AddFilterClick(false);
+    }
+    else if(name == 'RFragFilt')
+    {
+        indexToRemove = ListOfFilterFragmentStrings.findIndex(x => x == event.target.innerHTML.replace(/ x/g, '').trim());
+        ListOfFilterFragmentStrings.splice(indexToRemove, 1);
+        
+        AddFragmentFilterClick(false);
+    }
 }
 
 function DisplayClick()
