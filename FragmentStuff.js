@@ -218,14 +218,14 @@ function RunClick(){
             {
                 RelicsOfFragmentsinRows[i].push([FragmentPermutations[i][x].RelicOneID, FragmentPermutations[i][x].RelicTwoID]);
             }
-        }
-        document.getElementById('DisplayMessage').innerHTML = `<h1 style="color:green;">Combinations Complete!</h1>`;
+        }        
         SetListAvailableRelicsPerRow();
         document.getElementById("CombinationsPossible").innerHTML = `Total Combinations Possible: ${ListOfAvailableRelicsPerRow.length}`;
         PopulateFilterDropDown();
         AddClickEventToFilterDropDownItems();
         PopulateFragmentFilterDropDown();
         AddClickEventToFragmentFilterDropDownItems();
+        document.getElementById('DisplayMessage').innerHTML = `<h1 style="color:green;">Combinations Complete!</h1>`;
     }
 }
 
