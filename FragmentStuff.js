@@ -188,6 +188,7 @@ function ClearClick(){
 }
 
 function RunClick(){
+    ClearClick();
     let AllFragmentsFromRelics;
     FragmentPermutations = [];
     let FragTable = document.getElementById('ListOfFragments');
